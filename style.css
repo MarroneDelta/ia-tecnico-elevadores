@@ -1,0 +1,49 @@
+/* ===== SIDEBAR ===== */
+section[data-testid="stSidebar"] {
+    background:(#0b1220, #00040b, #151923);
+    
+    
+    padding-top: 20px;
+}
+
+
+
+/* ===== TÍTULOS ===== */
+h1, h2, h3 {
+    color: #f3f3f3;
+    
+    
+}
+
+/* ===== CHAT ===== */
+div[data-testid="stChatMessage"] {
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 8px;
+    
+    
+    
+   
+
+}
+
+/* ===== BOTÕES ===== */
+button {
+    border-radius: 30px !important;
+    font-weight: 600;
+}
+
+button:hover {
+    transform: scale(1.02);
+    transition: 0.9s ease-in-out;
+    
+}
+
+/* ===== INPUT CHAT ===== */
+textarea {
+    border-radius: 40px !important;
+    background-color: #f3f3f3;
+    
+    
+} 
+/* Tenta esconder o placeholder simulado do chat_input de forma agressiva */

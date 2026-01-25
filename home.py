@@ -10,10 +10,10 @@ supabase = create_client(
 st.title("🔐 Login Técnico")
 
 # Form de login
-with st.form("login_form"):
-    email = st.text_input("Email")
-    password = st.text_input("Senha", type="password")
-    submit = st.form_submit_button("Entrar")
+with st.form("login_form",width=500):
+    email = st.text_input("Email",placeholder="Email")
+    password = st.text_input("Senha", type="password",placeholder='Senha')
+    submit = st.form_submit_button("Entrar",type='tertiary')
 
 if submit:
     try:
@@ -23,7 +23,7 @@ if submit:
         st.success("Login realizado! Redirecionando...")
         st.rerun()          # ← força o main.py a recarregar e mostrar a página correta
     except Exception as e:
-        st.error(f"Erro: {str(e)}" if str(e) else "Email ou senha inválidos")
+        st.error("Email ou senha inválidos")
 
 # Mensagem inicial (só aparece se não logado)
 if st.session_state.user is None:

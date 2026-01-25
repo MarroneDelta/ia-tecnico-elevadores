@@ -5,13 +5,21 @@ import google.generativeai as genai
 from supabase import create_client
 from datetime import datetime
 
+def load_css():
+    with open("style.css", encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+load_css()
+
+
+
 # ================= CONFIG =================
 st.set_page_config(page_title="🤖 Chat Técnico de Elevadores", layout="wide")
 st.title("🤖 Chat Técnico de Elevadores")
 
 # Configure sua API KEY do Gemini
-genai.configure(api_key=st.secrets.get("GEMINI_API_KEY", "SUA_API_KEY_AQUI"))
-model = genai.GenerativeModel("gemini-2.5-flash-lite")
+genai.configure(api_key=st.secrets.get("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 # Supabase
 supabase = create_client(
@@ -113,6 +121,10 @@ if "historico" not in st.session_state:
 
 # ================= SIDEBAR =================
 st.sidebar.header("📄 Enviar Manuais PDF")
+st.sidebar.divider()
+
+
+
 
 pdfs = st.sidebar.file_uploader(
     "Manuais técnicos",
@@ -131,13 +143,22 @@ if pdfs:
 if not st.session_state["blocos"]:
     st.info("Envie um ou mais manuais PDF para começar.")
     st.stop()
+if st.sidebar.button("🔒 Sair"):
+    st.sidebar.markdown("---")
+    st.sidebar.markdown(
+    "<div style='margin-top:30vh'></div>,",
+    
+    unsafe_allow_html=True)
+    st.session_state.clear()
+    st.rerun()
 
 # ================= CHAT =================
 for msg in st.session_state["historico"]:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-pergunta = st.chat_input("Pergunte algo relevante")
+pergunta = st.chat_input("Pergunte algo relevante    ")
+
 
 if pergunta:
     # Adiciona pergunta do usuário ao histórico
@@ -190,7 +211,17 @@ RESPOSTA TÉCNICA CLARA E HUMANA:
 
     rodape = f"\n\n📄 Páginas consultadas: {', '.join(map(str, sorted(paginas_usadas)))}"
     resposta_final = resposta.strip() + rodape
+    
 
     st.session_state["historico"].append({"role": "assistant", "content": resposta_final})
     with st.chat_message("assistant"):
         st.markdown(resposta_final)
+        sentiment_mapping = [":material/thumb_down:", ":material/thumb_up:"]
+        selected = st.feedback("thumbs")
+        if selected is not None:
+            st.markdown(f"Voce selecionou: {sentiment_mapping[selected]}")
+
+    st.divider()
+
+
+
