@@ -33,6 +33,11 @@ button {
     font-weight: 600;
 }
 
+class[data-testid="distBaseButton-secondary"]{
+    border: none;
+   
+}
+
 button:hover {
     transform: scale(1.02);
     transition: 0.9s ease-in-out;
@@ -47,3 +52,24 @@ textarea {
     
 } 
 /* Tenta esconder o placeholder simulado do chat_input de forma agressiva */
+/* Remove botão nativo do navegador */
+/* ===== FILE UPLOADER ===== */
+
+/* Esconde o botão "Browse files" */
+section[data-testid="stFileUploader"] label {
+    display: none !important;
+}
+
+/* Esconde texto padrão */
+section[data-testid="stFileUploader"] small {
+    display: none !important;
+}
+
+/* Ajusta o container para parecer dropzone */
+section[data-testid="stFileUploader"] {
+    border: 2px dashed #2a2f3a;
+    border-radius: 14px;
+    padding: 24px;
+    background-color: #0b1220;
+}
+

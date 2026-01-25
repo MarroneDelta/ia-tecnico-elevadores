@@ -31,6 +31,32 @@ supabase = create_client(
 if "user" not in st.session_state or st.session_state.user is None:
     st.error("Acesso negado. Volte e faça login.")
     st.stop()
+# Pegamos o ID do usuário uma vez (mais seguro)
+user_id = st.session_state.user.id
+
+# ================= CARREGA HISTÓRICO DO SUPABASE =================
+if "historico" not in st.session_state:
+    st.session_state["historico"] = []
+
+if not st.session_state["historico"]:  # só carrega se ainda estiver vazio
+    try:
+        response = supabase.table("consultations") \
+            .select("question, answer") \
+            .eq("technician_id", user_id) \
+            .order("created_at", desc=False) \
+            .execute()
+
+        historico_temp = []
+        for row in response.data:
+            historico_temp.append({"role": "user", "content": row["question"]})
+            historico_temp.append({"role": "assistant", "content": row["answer"]})
+
+        st.session_state["historico"] = historico_temp
+
+    except Exception as e:
+        st.warning(f"Não consegui carregar o histórico: {str(e)}")
+        # continua com histórico vazio, mas app não para
+        st.session_state["historico"] = []
 
 # ================= FUNÇÕES =================
 def extrair_texto_pdf(file):
@@ -120,17 +146,21 @@ if "historico" not in st.session_state:
     st.session_state["historico"] = []
 
 # ================= SIDEBAR =================
-st.sidebar.header("📄 Enviar Manuais PDF")
 st.sidebar.divider()
-
-
-
+st.sidebar.markdown("""
+### 📄 Enviar manuais técnicos
+Arraste os PDFs aqui
+""")
 
 pdfs = st.sidebar.file_uploader(
-    "Manuais técnicos",
+    "Carregar arquivos",
     type="pdf",
-    accept_multiple_files=True
+    accept_multiple_files=True,
+    label_visibility='collapsed'
 )
+
+    
+
 
 if pdfs:
     with st.spinner("Processando manuais..."):
@@ -206,22 +236,31 @@ PERGUNTA DO TÉCNICO:
 RESPOSTA TÉCNICA CLARA E HUMANA:
 """
 
-    with st.spinner("Consultando o especialista..."):
-        resposta = model.generate_content(prompt).text
+with st.spinner("Consultando o especialista..."):
+        try:
+            resposta = model.generate_content(prompt).text.strip()
+            rodape = f"\n\n📄 Páginas consultadas: {', '.join(map(str, sorted(paginas_usadas)))}"
+            resposta_final = resposta + rodape
 
-    rodape = f"\n\n📄 Páginas consultadas: {', '.join(map(str, sorted(paginas_usadas)))}"
-    resposta_final = resposta.strip() + rodape
-    
+            # SALVA NO SUPABASE
+            save_response = supabase.table("consultations").insert({
+                "technician_id": user_id,               # ← OBRIGATÓRIO para passar na política
+                "question": pergunta,
+                "answer": resposta_final
+            }).execute()
 
-    st.session_state["historico"].append({"role": "assistant", "content": resposta_final})
-    with st.chat_message("assistant"):
-        st.markdown(resposta_final)
-        sentiment_mapping = [":material/thumb_down:", ":material/thumb_up:"]
-        selected = st.feedback("thumbs")
-        if selected is not None:
-            st.markdown(f"Voce selecionou: {sentiment_mapping[selected]}")
+            # Se salvou com sucesso, adiciona ao histórico local
+            st.session_state["historico"].append({"role": "assistant", "content": resposta_final})
 
-    st.divider()
+            with st.chat_message("assistant"):
+                st.markdown(resposta_final)
+                # seu feedback thumbs aqui...
+
+        except Exception as e:
+            pass
+            # st.error(f"Erro ao gerar ou salvar resposta: {str(e)}")
+
+st.divider()
 
 
 
