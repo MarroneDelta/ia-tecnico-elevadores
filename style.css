@@ -1,75 +1,287 @@
-/* ===== SIDEBAR ===== */
-section[data-testid="stSidebar"] {
-    background:(#0b1220, #00040b, #151923);
-    
-    
-    padding-top: 20px;
+/* ===== SIDEBAR CONVERSAS ESTILO CHATGPT ===== */
+
+/* Scrollbar customizada para sidebar */
+.main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
-
-
-/* ===== TÍTULOS ===== */
-h1, h2, h3 {
-    color: #f3f3f3;
-    
-    
+/* Botões de conversa */
+[data-testid="stSidebar"] button[kind="secondary"] {
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    background-color: transparent;
+    border: 1px solid transparent;
 }
 
-/* ===== CHAT ===== */
-div[data-testid="stChatMessage"] {
-    border-radius: 12px;
-    padding: 10px;
-    margin-bottom: 8px;
-    
-    
-    
-   
-
+[data-testid="stSidebar"] button[kind="secondary"]:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ===== BOTÕES ===== */
-button {
-    border-radius: 30px !important;
-    font-weight: 600;
-}
-
-class[data-testid="distBaseButton-secondary"]{
+/* Botão de conversa ativa */
+[data-testid="stSidebar"] button[kind="primary"] {
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-size: 0.9rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
-   
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
-button:hover {
-    transform: scale(1.02);
-    transition: 0.9s ease-in-out;
+/* Botão Nova Conversa */
+[data-testid="stSidebar"] button[kind="primary"]:first-of-type {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+    transition: all 0.3s ease;
+}
+
+[data-testid="stSidebar"] button[kind="primary"]:first-of-type:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(17, 153, 142, 0.4);
+}
+
+/* Botão de deletar conversa */
+[data-testid="stSidebar"] button:has-text("🗑️") {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.2s ease;
+}
+
+[data-testid="stSidebar"] button:has-text("🗑️"):hover {
+    background-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Grupos de data na sidebar */
+[data-testid="stSidebar"] strong {
+    color: #9ca3af;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 1rem;
+    display: block;
+}
+
+/* Divisores */
+[data-testid="stSidebar"] hr {
+    margin: 1rem 0;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== ÁREA DE CHAT ===== */
+
+/* Mensagens do usuário */
+[data-testid="stChatMessage"][data-testid-role="user"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+/* Mensagens do assistente */
+[data-testid="stChatMessage"][data-testid-role="assistant"] {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Input do chat */
+[data-testid="stChatInput"] {
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+[data-testid="stChatInput"]:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* ===== EXPANDERS ===== */
+
+[data-testid="stExpander"] {
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 0.5rem;
+}
+
+[data-testid="stExpander"]:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== MÉTRICAS ===== */
+
+[data-testid="stMetric"] {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+/* ===== SPINNER CUSTOMIZADO ===== */
+
+[data-testid="stSpinner"] > div {
+    border-color: #667eea transparent transparent transparent;
+}
+
+/* ===== ALERTAS E NOTIFICAÇÕES ===== */
+
+.stAlert {
+    border-radius: 8px;
+    border-left-width: 4px;
+}
+
+/* Info */
+[data-baseweb="notification"][kind="info"] {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-left-color: #3b82f6;
+}
+
+/* Success */
+[data-baseweb="notification"][kind="success"] {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-left-color: #10b981;
+}
+
+/* Warning */
+[data-baseweb="notification"][kind="warning"] {
+    background-color: rgba(245, 158, 11, 0.1);
+    border-left-color: #f59e0b;
+}
+
+/* Error */
+[data-baseweb="notification"][kind="error"] {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-left-color: #ef4444;
+}
+
+/* ===== SCROLLBAR CUSTOMIZADA ===== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== ANIMAÇÕES ===== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+[data-testid="stChatMessage"] {
+    animation: fadeIn 0.3s ease;
+}
+
+/* ===== MELHORIAS GERAIS ===== */
+
+/* Remover padding extra do container principal */
+.main .block-container {
+    max-width: 1200px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+/* Melhorar espaçamento do título */
+h1 {
+    margin-bottom: 0.5rem !important;
+}
+
+/* Captions mais sutis */
+.stCaption {
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+/* Upload de arquivos */
+[data-testid="stFileUploader"] {
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+[data-testid="stFileUploader"]:hover {
+    border-color: rgba(102, 126, 234, 0.5);
+    background-color: rgba(102, 126, 234, 0.05);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+@media (max-width: 768px) {
+    .main .block-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
     
+    [data-testid="stSidebar"] {
+        width: 100% !important;
+    }
 }
 
-/* ===== INPUT CHAT ===== */
-textarea {
-    border-radius: 40px !important;
-    background-color: #f3f3f3;
+/* ===== MODO ESCURO OTIMIZADO ===== */
+
+@media (prefers-color-scheme: dark) {
+    [data-testid="stChatMessage"][data-testid-role="assistant"] {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
     
-    
-} 
-/* Tenta esconder o placeholder simulado do chat_input de forma agressiva */
-/* Remove botão nativo do navegador */
-/* ===== FILE UPLOADER ===== */
-
-/* Esconde o botão "Browse files" */
-section[data-testid="stFileUploader"] label {
-    display: none !important;
+    [data-testid="stSidebar"] {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
 }
 
-/* Esconde texto padrão */
-section[data-testid="stFileUploader"] small {
-    display: none !important;
+/* ===== BOTÕES DE FEEDBACK ===== */
+
+/* Estilo para thumbs up/down */
+button:has-text("👍"),
+button:has-text("👎") {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.2s ease;
+    font-size: 1.2rem;
 }
 
-/* Ajusta o container para parecer dropzone */
-section[data-testid="stFileUploader"] {
-    border: 2px dashed #2a2f3a;
-    border-radius: 14px;
-    padding: 24px;
-    background-color: #0b1220;
+button:has-text("👍"):hover {
+    background-color: rgba(16, 185, 129, 0.2);
+    border-color: #10b981;
 }
 
+button:has-text("👎"):hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+}
